@@ -149,7 +149,7 @@ def query_geotherm(perplexdir, scratchdir, index, P):
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Query perplex results at a single temperature on an isobar     
-def query_isobaric(perplexdir, scratchdir, index, T):
+def query_isobar(perplexdir, scratchdir, index, T):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     
@@ -171,6 +171,55 @@ def query_isobaric(perplexdir, scratchdir, index, T):
     # Read results and return them if possible
     try:
         fp = open(prefix + '%i_1.txt' %(index),'r');
+        data = fp.read(); 
+        fp.close();
+    except:
+        data = '';
+    return data;
+
+
+def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)'):
+    werami = perplexdir + 'werami'; # path to PerpleX werami
+    prefix = scratchdir + 'out_%i/' %(index); # path to data files
+    
+    # Create werami batch file
+    fp=open(prefix + 'werami.bat','w');
+    fp.write('%i\n3\n1\n%g\n%g\n%i\n36\n2\n%s\nn\n0\n' %(index,T_range[0],T_range[1],npoints,phase))
+    fp.close();
+    
+    # Make sure there isn't already an output
+    os.system('rm -f %s%i_1.tab' %(prefix, index));
+    
+    # Extract Perplex results with werami
+    os.system('cd %s; %s < werami.bat > /dev/null' %(prefix, werami));
+    
+    # Read results and return them if possible
+    try:
+        fp = open(prefix + '%i_1.tab' %(index),'r');
+        data = fp.read(); 
+        fp.close();
+    except:
+        data = '';
+    return data;
+
+def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints):
+    werami = perplexdir + 'werami'; # path to PerpleX werami
+    prefix = scratchdir + 'out_%i/' %(index); # path to data files
+    
+    # Create werami batch file
+    fp=open(prefix + 'werami.bat','w');
+    fp.write('%i\n3\n1\n%g\n%g\n%i\n36\n1\nn\n0\n' %(index,T_range[0],T_range[1],npoints))
+    fp.close();
+    
+    # Make sure there isn't already an output
+    os.system('rm -f %s%i_1.tab' %(prefix, index));
+    
+    # Extract Perplex results with werami
+    os.system('cd %s; %s < werami.bat > /dev/null' %(prefix, werami));
+    
+    # Read results and return them if possible
+    try:
+        fp = open(prefix + '%i_1.tab' %(index),'r');
         data = fp.read(); 
         fp.close();
     except:
