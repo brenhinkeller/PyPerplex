@@ -1,10 +1,7 @@
-# os.system lets us access the command line - appears to replicate the functionality
-# of the stdlib.h function system()
-import os
-
-# For importing PerpleX text file output as data frames
-import pandas as pd
-
+# Import some useful packages
+import os # os.system lets us access the command line
+import re # Regular expressions, for cleaning up column names
+import pandas as pd # Pandas, for importing PerpleX text file output as data frames
 
 ############################ Function definitions ###############################
 
@@ -121,7 +118,8 @@ def query_geotherm_seismic(perplexdir, scratchdir, index = 1, P_range = [284.2, 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# Query perplex results at a single pressure on a geotherm     
+# Query perplex results at a single pressure on a geotherm. Results are returned
+# as string read from perplex text file output  
 def query_geotherm(perplexdir, scratchdir, index, P):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
@@ -152,7 +150,8 @@ def query_geotherm(perplexdir, scratchdir, index, P):
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# Query perplex results at a single temperature on an isobar     
+# Query perplex results at a single temperature on an isobar. Results are 
+# returned as string read from perplex text file output
 def query_isobar(perplexdir, scratchdir, index, T):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
@@ -183,6 +182,8 @@ def query_isobar(perplexdir, scratchdir, index, T):
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Query perplex results for a specified phase along an entire isobar. Results
+# are returned as a pandas dataframe
 def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)', include_fluid = 'n'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
@@ -205,6 +206,9 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
 #        data = fp.read(); 
 #        fp.close();
         data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
+        data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
+        data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
+        data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
     except:
 #        data = '';
         data = 0;
@@ -212,6 +216,8 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Querycalculated system properties along an entire isobar. Results are returned
+# as a pandas dataframe
 def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'n'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
@@ -234,6 +240,9 @@ def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include
 #        data = fp.read(); 
 #        fp.close();
         data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
+        data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
+        data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
+        data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
     except:
         data = '';
         data = 0;
