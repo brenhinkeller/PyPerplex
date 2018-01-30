@@ -55,19 +55,16 @@ P = 10000; # bar
 T_range = [500+273.15, 1500+273.15];
 
 # Elements to use and starting composition
-elementstring = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
 protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithBootstrapped.csv', delim_whitespace=True);
 observed = pd.read_csv(scratchdir + 'ObservedCompositions.csv', delim_whitespace=True);
 elements = ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O'];
 
 ## Elements to use and starting composition
-#elementstring = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
 #protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithEstimates.csv', delim_whitespace=True);
 #observed = pd.read_csv(scratchdir + 'ObservedCompositions.csv', delim_whitespace=True);
 #elements = ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O'];
 
 ## Exclude Mn and Ti since the melt model can't handle them
-#elementstring = 'SIO2\nAL2O3\nFEO\nMGO\nCAO\nNA2O\nK2O\nH2O\n'; # No Mn or Ti
 #protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithEstimatesNoMnTi.csv', delim_whitespace=True);
 #observed = pd.read_csv(scratchdir + 'ObservedCompositionsNoMnTi.csv', delim_whitespace=True);
 #elements = ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O']
@@ -82,7 +79,7 @@ for index in range(len(protoliths)):
 
 #    # Configure (run build and vertex)
 #    t = time.time();
-#    perplex.configure_isobaric(perplexdir, scratchdir, starting_composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes, elementstring);
+#    perplex.configure_isobaric(perplexdir, scratchdir, starting_composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes);
 #    elapsed_G_W_isobaric = time.time() - t
 #    print elapsed_G_W_isobaric
     
@@ -118,13 +115,8 @@ for index in range(len(protoliths)):
     # Plot solid composition as a function of melt percent
     plt.figure()
     plt.clf()
-    plt.plot(melt['wt_pct'], solid['SIO2'])
-    plt.plot(melt['wt_pct'], solid['AL2O3'])
-    plt.plot(melt['wt_pct'], solid['MGO'])
-    plt.plot(melt['wt_pct'], solid['FEO'])
-    plt.plot(melt['wt_pct'], solid['CAO'])
-    plt.plot(melt['wt_pct'], solid['K2O'])
-    plt.plot(melt['wt_pct'], solid['NA2O'])
+    for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+        plt.plot(melt['wt_pct'], solid[e]);
     plt.xlabel('Percent melt')
     plt.ylabel('Wt. % in solid')
     plt.legend(fontsize=10)

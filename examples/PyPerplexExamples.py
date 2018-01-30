@@ -34,19 +34,19 @@ scratchdir = '/Users/cbkeller/Applications/perplex-stable/'; # Location of direc
 
 ## Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
 #composition = [45.1242, 0.2005, 4.4623, 8.0723, 0.1354, 37.9043, 3.5598, 0.3610, 0.0291, 0.1511,]; # McDonough Pyrolite
-#elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
+#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 ## Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
 #composition = [50.2841, 0.9600, 15.3801, 8.5423, 0.1665, 9.2868, 9.7277, 2.5568, 0.8000, 2.3000,]; # Kelemen primitive continental basalt
-#elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
+#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 ## Composition   SIO2     TIO2    AL2O3    FEO      MNO      MGO     CAO     NA2O    K2O     H2O
 #composition = [49.2388, 0.8619, 12.7914, 11.1946, 0.2050, 12.3062, 9.6917, 1.6871, 0.5019, 1.5214]; # Average Archean basalt
-#elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
+#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 # Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
 composition = [64.8684, 0.6500, 15.0878, 4.9230, 0.1009, 3.2589, 4.1573, 3.8177, 2.1386, 0.9973,]; # Test composition for K/Ca
-elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
+elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 
 # # # # # # # # # # # # # Some solution model options # # # # # # # # # # # # # #
@@ -78,7 +78,7 @@ W_excludes = 'andr\nts\nparg\ngl\nged\nfanth\n';
 #
 ## Configure (run build and vertex)
 #t = time.time();
-#perplex.configure_geotherm(perplexdir, scratchdir, composition, index, P_range, T_surf, geotherm, 'hp11ver.dat', 'melt(G)' + G_solution_phases, G_excludes, elements);
+#perplex.configure_geotherm(perplexdir, scratchdir, composition, elements, index, P_range, T_surf, geotherm, 'hp11ver.dat', 'melt(G)' + G_solution_phases, G_excludes);
 #elapsed_G_geotherm = time.time() - t
 #print elapsed_G_geotherm
 #
@@ -100,7 +100,7 @@ index = 1;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + G_solution_phases, G_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + G_solution_phases, G_excludes);
 elapsed_G_isobaric = time.time() - t
 print elapsed_G_isobaric
 
@@ -125,13 +125,8 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
@@ -142,18 +137,13 @@ plt.savefig("MeltingTest_G.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
@@ -170,7 +160,7 @@ index = 2;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes);
 elapsed_G_W_isobaric = time.time() - t
 print elapsed_G_W_isobaric
 
@@ -186,7 +176,9 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(G)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
-
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
+    
 # Add results to melt % vs temperature figure
 plt.figure(0)
 plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
@@ -194,15 +186,10 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + W_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -211,18 +198,13 @@ plt.savefig("MeltingTest_G_W.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + W_solution_phases, %i bar' %(P))
@@ -239,7 +221,7 @@ index = 3;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + JH_solution_phases, JH_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + JH_solution_phases, JH_excludes);
 elapsed_G_JH_isobaric = time.time() - t
 print elapsed_G_JH_isobaric
 
@@ -255,6 +237,8 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(G)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
 
 # Add results to melt % vs temperature figure
 plt.figure(0)
@@ -263,15 +247,10 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + JH_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -280,18 +259,13 @@ plt.savefig("MeltingTest_G_JH.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + JH_solution_phases, %i bar' %(P))
@@ -308,7 +282,7 @@ index = 4;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp02ver.dat', 'pMELTS(G)\n' + HP_solution_phases, HP_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp02ver.dat', 'pMELTS(G)\n' + HP_solution_phases, HP_excludes);
 elapsed_pMELTS_HP_isobaric = time.time() - t
 print elapsed_pMELTS_HP_isobaric
 
@@ -324,6 +298,8 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'pMELTS(G)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
 
 # Add results to melt % vs temperature figure
 plt.figure(0)
@@ -332,15 +308,10 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('pMELTS(G) + HP_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -349,18 +320,13 @@ plt.savefig("MeltingTest_pMELTS_HP.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e])
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('pMELTS(G) + HP_solution_phases, %i bar' %(P))
@@ -377,7 +343,7 @@ index = 5;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + W_solution_phases, W_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + W_solution_phases, W_excludes);
 elapsed_W_isobaric = time.time() - t
 print elapsed_W_isobaric
 
@@ -393,6 +359,8 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(W)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
 
 # Add results to melt % vs temperature figure
 plt.figure(0)
@@ -401,15 +369,10 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + W_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -418,18 +381,13 @@ plt.savefig("MeltingTest_W.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + W_solution_phases, %i bar' %(P))
@@ -446,7 +404,7 @@ index = 6;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + G_solution_phases, G_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + G_solution_phases, G_excludes);
 elapsed_W_G_isobaric = time.time() - t
 print elapsed_W_G_isobaric
 
@@ -462,6 +420,8 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(W)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
 
 # Plot melt % vs temperature
 plt.figure(0)
@@ -470,15 +430,10 @@ plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + G_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -487,18 +442,13 @@ plt.savefig("MeltingTest_W_G.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
-
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+    
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + G_solution_phases, %i bar' %(P))
@@ -515,7 +465,7 @@ index = 7;
 
 # Configure (run build and vertex)
 t = time.time();
-perplex.configure_isobaric(perplexdir, scratchdir, composition, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + JH_solution_phases, JH_excludes, elements);
+perplex.configure_isobaric(perplexdir, scratchdir, composition, elements, index, P, T_range, 'hp11ver.dat', 'melt(W)\n' + JH_solution_phases, JH_excludes);
 elapsed_W_JH_isobaric = time.time() - t
 print elapsed_W_JH_isobaric
 
@@ -531,6 +481,8 @@ npoints = T_range_inc[1]-T_range_inc[0]+1
 melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(W)')
 # Get system data for all temperatures - - results returned as pandas data frame
 system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints)    
+# Get system modes for all temperatures -- results returned as pandas data frame
+modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
 
 # Plot melt % vs temperature
 plt.figure(0)
@@ -544,15 +496,10 @@ plt.savefig("PercentMeltVsTemp.pdf",transparent=True)
 # Plot melt composition as a function of melt percent
 plt.figure(index)
 plt.clf()
-plt.plot(melt['wt_pct'], melt['SIO2'])
-plt.plot(melt['wt_pct'], melt['AL2O3'])
-plt.plot(melt['wt_pct'], melt['MGO'])
-plt.plot(melt['wt_pct'], melt['FEO'])
-plt.plot(melt['wt_pct'], melt['CAO'])
-plt.plot(melt['wt_pct'], melt['K2O'])
-plt.plot(melt['wt_pct'], melt['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], melt[e])
 plt.xlabel('Percent melt')
-plt.ylabel('Wt. %')
+plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + JH_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
@@ -561,18 +508,13 @@ plt.savefig("MeltingTest_W_JH.pdf",transparent=True)
 # Create dataframe to hold solid composition
 solid = pd.DataFrame();
 solid['wt_pct'] = 100 - melt['wt_pct']
-for element in ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O']:
-    solid[element] = (system[element] - (melt[element] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
+for e in elements:
+    solid[e] = (system[e] - (melt[e] * melt['wt_pct']/100)) / (solid['wt_pct']/100) 
 
 # Plot solid composition as a function of melt percent
 plt.figure()
-plt.plot(melt['wt_pct'], solid['SIO2'])
-plt.plot(melt['wt_pct'], solid['AL2O3'])
-plt.plot(melt['wt_pct'], solid['MGO'])
-plt.plot(melt['wt_pct'], solid['FEO'])
-plt.plot(melt['wt_pct'], solid['CAO'])
-plt.plot(melt['wt_pct'], solid['K2O'])
-plt.plot(melt['wt_pct'], solid['NA2O'])
+for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['wt_pct'], solid[e]);
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + JH_solution_phases, %i bar' %(P))

@@ -8,7 +8,7 @@ import pandas as pd # Pandas, for importing PerpleX text file output as data fra
 # Set up a PerpleX calculation for a single bulk composition along a specified 
 # geothermal gradient and pressure (depth) range. P specified in bar and T_surf
 # in Kelvin, with geothermal gradient in units of Kelvin/bar
-def configure_geotherm(perplexdir, scratchdir, composition, index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n', elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMGO\nCAO\nNA2O\nK2O\nH2O\nCO2\n'):
+def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
     build = perplexdir + 'build'; # path to PerpleX build
     vertex = perplexdir + 'vertex'; # path to PerpleX vertex
 
@@ -23,10 +23,14 @@ def configure_geotherm(perplexdir, scratchdir, composition, index = 1, P_range =
     os.system('cp %sperplex_option.dat %s' %(perplexdir, prefix));
     os.system('cp %ssolution_model.dat %s' %(perplexdir, prefix));
 
+
     # Create build batch file
     fp=open(prefix + 'build.bat','w');
     # Name, components, and basic options. Holland and Powell (1998) 'CORK' fluid equation state.
-    fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elements));
+    elementstring = '';
+    for e in elements:
+        elementstring = elementstring + e + '\n'
+    fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elementstring));
     # Pressure gradient details
     fp.write('3\nn\ny\n2\n1\n%g\n%g\n%g\n%g\ny\n' %(T_surf, geotherm, P_range[0],P_range[1]));
     # Whole-rock composition
@@ -50,7 +54,7 @@ def configure_geotherm(perplexdir, scratchdir, composition, index = 1, P_range =
 
 # Set up a PerpleX calculation for a single bulk composition along a specified 
 # isobaric temperature gradient. P specified in bar and T_range in Kelvin
-def configure_isobaric(perplexdir, scratchdir, composition, index = 1, P = 10000, T_range = [500+273.15, 1500+273.15], dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n', elements = 'SIO2\nTIO2\nAL2O3\nFEO\nMGO\nCAO\nNA2O\nK2O\nH2O\nCO2\n'):
+def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P = 10000, T_range = [500+273.15, 1500+273.15], dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
     build = perplexdir + 'build'; # path to PerpleX build
     vertex = perplexdir + 'vertex'; # path to PerpleX vertex
 
@@ -68,7 +72,10 @@ def configure_isobaric(perplexdir, scratchdir, composition, index = 1, P = 10000
     # Create build batch file
     fp=open(prefix + 'build.bat','w');
     # Name, components, and basic options. Holland and Powell (1998) 'CORK' fluid equation state.
-    fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elements));
+    elementstring = '';
+    for e in elements:
+        elementstring = elementstring + e + '\n'
+    fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elementstring));
     # Pressure gradient details
     fp.write('3\nn\nn\n2\n%g\n%g\n%g\ny\n' %(T_range[0],T_range[1],P));
     # Whole-rock composition
