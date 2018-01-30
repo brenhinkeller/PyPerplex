@@ -54,17 +54,23 @@ W_excludes = 'andr\nts\nparg\ngl\nged\nfanth\n';
 P = 10000; # bar
 T_range = [500+273.15, 1500+273.15];
 
+# Elements to use and starting composition
+elementstring = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
+protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithBootstrapped.csv', delim_whitespace=True);
+observed = pd.read_csv(scratchdir + 'ObservedCompositions.csv', delim_whitespace=True);
+elements = ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O'];
+
 ## Elements to use and starting composition
 #elementstring = 'SIO2\nTIO2\nAL2O3\nFEO\nMNO\nMGO\nCAO\nNA2O\nK2O\nH2O\n';
 #protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithEstimates.csv', delim_whitespace=True);
 #observed = pd.read_csv(scratchdir + 'ObservedCompositions.csv', delim_whitespace=True);
 #elements = ['SIO2','TIO2','AL2O3','FEO','MNO','MGO','CAO','NA2O','K2O','H2O'];
 
-# Exclude Mn and Ti since the melt model can't handle them
-elementstring = 'SIO2\nAL2O3\nFEO\nMGO\nCAO\nNA2O\nK2O\nH2O\n'; # No Mn or Ti
-protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithEstimatesNoMnTi.csv', delim_whitespace=True);
-observed = pd.read_csv(scratchdir + 'ObservedCompositionsNoMnTi.csv', delim_whitespace=True);
-elements = ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O']
+## Exclude Mn and Ti since the melt model can't handle them
+#elementstring = 'SIO2\nAL2O3\nFEO\nMGO\nCAO\nNA2O\nK2O\nH2O\n'; # No Mn or Ti
+#protoliths = pd.read_csv(scratchdir + 'GranuliteProtlithEstimatesNoMnTi.csv', delim_whitespace=True);
+#observed = pd.read_csv(scratchdir + 'ObservedCompositionsNoMnTi.csv', delim_whitespace=True);
+#elements = ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O']
 
 bestfits = pd.DataFrame();
 
@@ -74,20 +80,21 @@ for index in range(len(protoliths)):
     starting_composition = protoliths[index:index+1].values[0];
     observed_composition = observed[index:index+1];
 
-    # Configure (run build and vertex)
-    t = time.time();
-    perplex.configure_isobaric(perplexdir, scratchdir, starting_composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes, elementstring);
-    elapsed_G_W_isobaric = time.time() - t
-    print elapsed_G_W_isobaric
+#    # Configure (run build and vertex)
+#    t = time.time();
+#    perplex.configure_isobaric(perplexdir, scratchdir, starting_composition, index, P, T_range, 'hp11ver.dat', 'melt(G)\n' + W_solution_phases, W_excludes, elementstring);
+#    elapsed_G_W_isobaric = time.time() - t
+#    print elapsed_G_W_isobaric
     
     # Query the full isobar
     T_range_inc = [np.floor(T_range[0])+1, np.ceil(T_range[1])-1];
     npoints = T_range_inc[1]-T_range_inc[0]+1;
-    # Get melt data for all temperatures - - results returned as pandas data frame
+    # Get melt data for all temperatures -- results returned as pandas data frame
     melt = perplex.query_isobar_phase(perplexdir,scratchdir,index,T_range_inc,npoints,'melt(G)');
-    # Get system data for all temperatures - - results returned as pandas data frame
+    # Get system data for all temperatures -- results returned as pandas data frame
     system = perplex.query_isobar_system(perplexdir,scratchdir,index,T_range_inc,npoints);   
-    
+    # Get system modes for all temperatures -- results returned as pandas data frame
+    modes = perplex.query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints);
     
     # Create dataframe to hold solid composition
     solid = pd.DataFrame();
@@ -105,8 +112,9 @@ for index in range(len(protoliths)):
     closest_match = np.argmin(rsquared);
     
 #    print melt['wt_pct'].values[closest_match];
-    print solid[closest_match:closest_match+1];
-    
+    print solid.iloc[closest_match];
+    print modes.iloc[closest_match];
+
     # Plot solid composition as a function of melt percent
     plt.figure()
     plt.clf()

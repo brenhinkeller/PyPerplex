@@ -31,7 +31,7 @@ auto_refine_factor_I      2 default | [3.] refine factor for gridded minimizatio
 auto_refine_factor_II     default | [10.] refine factor for composition and mixed variable diagrams (auto_refine keyword group)
 auto_refine_factor_III    default | [3.] refine factor for Schreinemakers diagrams (auto_refine keyword group)
 auto_refine_file          default | [F] echo auto-refine data to my_project_auto_refine.txt
-bad_number                default | [NaN] any number or NaN (not-a-number)
+bad_number                0 default | [NaN] any number or NaN (not-a-number)
 bounds                    default | [VRH] VRH or HS; Voigt-Reuss-Hill or Hashin-Shtrikman, see vrh/hs_averaging
 closed_c_space            default | [T] T => closed composition space for gridded minimization 
 composition_constant      default | [F] allow constants in composition expressions

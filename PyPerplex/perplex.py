@@ -214,6 +214,37 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
         data = 0;
     return data;
 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Query modal mineralogy along a given isobar
+def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'n'):
+    werami = perplexdir + 'werami'; # path to PerpleX werami
+    prefix = scratchdir + 'out_%i/' %(index); # path to data files
+    n_header_lines = 8;
+
+    # Create werami batch file
+    fp=open(prefix + 'werami.bat','w');
+    fp.write('%i\n3\n1\n%g\n%g\n%i\n25\nn\n%s\n0\n' %(index, T_range[0], T_range[1], npoints, include_fluid))
+    fp.close();
+    
+    # Make sure there isn't already an output
+    os.system('rm -f %s%i_1.tab' %(prefix, index));
+    
+    # Extract Perplex results with werami
+    os.system('cd %s; %s < werami.bat > /dev/null' %(prefix, werami));
+    
+    # Read results and return them if possible
+    try:
+#        fp = open(prefix + '%i_1.tab' %(index),'r');
+#        data = fp.read(); 
+#        fp.close();
+        data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
+    except:
+#        data = '';
+        data = 0;
+    return data;
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Querycalculated system properties along an entire isobar. Results are returned
