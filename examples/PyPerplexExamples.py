@@ -34,19 +34,19 @@ scratchdir = '/Users/cbkeller/Applications/perplex-stable/'; # Location of direc
 
 ## Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
 #composition = [45.1242, 0.2005, 4.4623, 8.0723, 0.1354, 37.9043, 3.5598, 0.3610, 0.0291, 0.1511,]; # McDonough Pyrolite
-#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
+#elements = ['SIO2','TIO2','AL2O3','MNO','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
-## Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
-#composition = [50.2841, 0.9600, 15.3801, 8.5423, 0.1665, 9.2868, 9.7277, 2.5568, 0.8000, 2.3000,]; # Kelemen primitive continental basalt
-#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
+# Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
+composition = [50.2841, 0.9600, 15.3801, 8.5423, 0.1665, 9.2868, 9.7277, 2.5568, 0.8000, 2.3000,]; # Kelemen primitive continental basalt
+elements = ['SIO2','TIO2','AL2O3','MNO','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 ## Composition   SIO2     TIO2    AL2O3    FEO      MNO      MGO     CAO     NA2O    K2O     H2O
 #composition = [49.2388, 0.8619, 12.7914, 11.1946, 0.2050, 12.3062, 9.6917, 1.6871, 0.5019, 1.5214]; # Average Archean basalt
-#elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
+#elements = ['SIO2','TIO2','AL2O3','MNO','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
-# Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
-composition = [64.8684, 0.6500, 15.0878, 4.9230, 0.1009, 3.2589, 4.1573, 3.8177, 2.1386, 0.9973,]; # Test composition for K/Ca
-elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'];
+## Composition   SIO2     TIO2    AL2O3    FEO     MNO     MGO     CAO     NA2O    K2O     H2O
+#composition = [64.8684, 0.6500, 15.0878, 4.9230, 0.1009, 3.2589, 4.1573, 3.8177, 2.1386, 0.9973,]; # Test composition for K/Ca
+#elements = ['SIO2','TIO2','AL2O3','MNO','FEO','MGO','CAO','NA2O','K2O','H2O'];
 
 
 # # # # # # # # # # # # # Some solution model options # # # # # # # # # # # # # #
