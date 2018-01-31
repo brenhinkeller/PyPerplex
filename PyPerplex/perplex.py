@@ -191,7 +191,7 @@ def query_isobar(perplexdir, scratchdir, index, T):
 
 # Query perplex results for a specified phase along an entire isobar. Results
 # are returned as a pandas dataframe
-def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)', include_fluid = 'n'):
+def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)', include_fluid = 'y'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     n_header_lines = 8;
@@ -225,7 +225,7 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Query modal mineralogy along a given isobar
-def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'n'):
+def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'y'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     n_header_lines = 8;
@@ -255,8 +255,8 @@ def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Querycalculated system properties along an entire isobar. Results are returned
-# as a pandas dataframe
-def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'n'):
+# as a pandas dataframe. Set include_fluid = 'n' to get solid+melt only
+def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'y'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     n_header_lines = 8;
