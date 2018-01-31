@@ -5,10 +5,11 @@ import pandas as pd # Pandas, for importing PerpleX text file output as data fra
 
 ############################ Function definitions ###############################
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Set up a PerpleX calculation for a single bulk composition along a specified 
 # geothermal gradient and pressure (depth) range. P specified in bar and T_surf
 # in Kelvin, with geothermal gradient in units of Kelvin/bar
-def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
+def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp11ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
     build = perplexdir + 'build'; # path to PerpleX build
     vertex = perplexdir + 'vertex'; # path to PerpleX vertex
 
@@ -17,12 +18,9 @@ def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','
     os.system('rm -rf %s; mkdir -p %s' %(prefix, prefix));
     
     # Place required data files
-    #os.system('cp %s*.dat %s' %(perplexdir, prefix)); # Move all data files at once
     os.system('cp %s%s %s' %(perplexdir, dataset, prefix));
-
     os.system('cp %sperplex_option.dat %s' %(perplexdir, prefix));
     os.system('cp %ssolution_model.dat %s' %(perplexdir, prefix));
-
 
     # Create build batch file
     fp=open(prefix + 'build.bat','w');
@@ -36,10 +34,8 @@ def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','
     # Whole-rock composition
     for i in range(len(composition)):
         fp.write('%g ' %(composition[i]));
-    
     # Solution model
     fp.write('\nn\ny\nn\n' + excludes + '\ny\nsolution_model.dat\n' + solution_phases + '\nGeothermal');    
-#    fp.write('\nn\nn\ny\nsolution_model.dat\n' + solution_phases + '\nGeothermal');    
     fp.close();
     
     # build PerpleX problem definition
@@ -51,10 +47,9 @@ def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','
     return;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 # Set up a PerpleX calculation for a single bulk composition along a specified 
 # isobaric temperature gradient. P specified in bar and T_range in Kelvin
-def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P = 10000, T_range = [500+273.15, 1500+273.15], dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
+def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P = 10000, T_range = [500+273.15, 1500+273.15], dataset = 'hp11ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
     build = perplexdir + 'build'; # path to PerpleX build
     vertex = perplexdir + 'vertex'; # path to PerpleX vertex
 
@@ -63,9 +58,7 @@ def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','
     os.system('rm -rf %s; mkdir -p %s' %(prefix, prefix));
     
     # Place required data files
-    #os.system('cp %s*.dat %s' %(perplexdir, prefix)); # Move all data files at once
     os.system('cp %s%s %s' %(perplexdir, dataset, prefix));
-
     os.system('cp %sperplex_option.dat %s' %(perplexdir, prefix));
     os.system('cp %ssolution_model.dat %s' %(perplexdir, prefix));
 
@@ -81,11 +74,8 @@ def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','
     # Whole-rock composition
     for i in range(len(composition)):
         fp.write('%g ' %(composition[i]));
-    
     # Solution model
-    # fp.write('\nn\nn\ny\nsolution_model.dat\n' + solution_phases + '\nIsobaric');    
     fp.write('\nn\ny\nn\n' + excludes + '\ny\nsolution_model.dat\n' + solution_phases + '\nIsobaric');    
-
     fp.close();
     
     # build PerpleX problem definition
@@ -97,34 +87,6 @@ def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','
     return;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# Query perplex seismic results along a geotherm
-def query_geotherm_seismic(perplexdir, scratchdir, index = 1, P_range = [284.2, 28420], npoints = 100):
-    werami = perplexdir + 'werami'; # path to PerpleX werami
-    prefix = scratchdir + 'out_%i/' %(index); # path to data files
-    
-    # Create werami batch file
-    fp=open(prefix + 'werami.bat','w');
-    fp.write('%i\n3\n1\n%g\n%g\n%i\n2\nn\nn\n13\nn\nn\n15\nn\nn\n0\n0\n' %(index, P_range[0], P_range[1], npoints));
-    fp.close();
-    
-    # Make sure there isn't already an output
-    os.system('rm -f %s%i_1.tab' %(prefix, index));
-    
-    # Extract Perplex results with werami
-    os.system('cd %s; %s < werami.bat > /dev/null' %(prefix, werami));
-    
-    # Read results and return them if possible
-    try:
-        fp = open(prefix + '%i_1.tab' %(index),'r');
-        data = fp.read(); 
-        fp.close();
-    except:
-        data = '';
-    return data;
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 # Query perplex results at a single pressure on a geotherm. Results are returned
 # as string read from perplex text file output  
 def query_geotherm(perplexdir, scratchdir, index, P):
@@ -156,7 +118,31 @@ def query_geotherm(perplexdir, scratchdir, index, P):
     return data;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Query perplex seismic results along a geotherm
+def query_geotherm_seismic(perplexdir, scratchdir, index = 1, P_range = [284.2, 28420], npoints = 100):
+    werami = perplexdir + 'werami'; # path to PerpleX werami
+    prefix = scratchdir + 'out_%i/' %(index); # path to data files
+    n_header_lines = 8;
 
+    # Create werami batch file
+    fp=open(prefix + 'werami.bat','w');
+    fp.write('%i\n3\n1\n%g\n%g\n%i\n2\nn\nn\n13\nn\nn\n15\nn\nn\n0\n0\n' %(index, P_range[0], P_range[1], npoints));
+    fp.close();
+    
+    # Make sure there isn't already an output
+    os.system('rm -f %s%i_1.tab' %(prefix, index));
+    
+    # Extract Perplex results with werami
+    os.system('cd %s; %s < werami.bat > /dev/null' %(prefix, werami));
+    
+    # Read results and return them if possible
+    try:
+        data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
+    except:
+        data = 0;
+    return data;
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Query perplex results at a single temperature on an isobar. Results are 
 # returned as string read from perplex text file output
 def query_isobar(perplexdir, scratchdir, index, T):
@@ -188,10 +174,9 @@ def query_isobar(perplexdir, scratchdir, index, T):
     return data;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 # Query perplex results for a specified phase along an entire isobar. Results
-# are returned as a pandas dataframe
-def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)', include_fluid = 'y'):
+# are returned as a pandas DataFrame
+def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 'melt(G)', include_fluid = 'y', clean_units = True):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     n_header_lines = 8;
@@ -209,13 +194,11 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
     
     # Read results and return them if possible
     try:
-#        fp = open(prefix + '%i_1.tab' %(index),'r');
-#        data = fp.read(); 
-#        fp.close();
         data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
-        data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
-        data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
-        data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
+        if clean_units:
+            data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
+            data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
+            data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
     except:
 #        data = '';
         data = 0;
@@ -223,8 +206,8 @@ def query_isobar_phase(perplexdir, scratchdir, index, T_range, npoints, phase = 
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# Query modal mineralogy along a given isobar
+# Query modal mineralogy along a given isobar. Results are returned as a pandas
+# DataFrame.
 def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'y'):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
@@ -243,20 +226,15 @@ def query_isobar_modes(perplexdir, scratchdir, index, T_range, npoints, include_
     
     # Read results and return them if possible
     try:
-#        fp = open(prefix + '%i_1.tab' %(index),'r');
-#        data = fp.read(); 
-#        fp.close();
         data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
     except:
-#        data = '';
         data = 0;
     return data;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# Querycalculated system properties along an entire isobar. Results are returned
+# Query calculated system properties along an entire isobar. Results are returned
 # as a pandas dataframe. Set include_fluid = 'n' to get solid+melt only
-def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'y'):
+def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include_fluid = 'y', clean_units = True):
     werami = perplexdir + 'werami'; # path to PerpleX werami
     prefix = scratchdir + 'out_%i/' %(index); # path to data files
     n_header_lines = 8;
@@ -274,15 +252,12 @@ def query_isobar_system(perplexdir, scratchdir, index, T_range, npoints, include
     
     # Read results and return them if possible
     try:
-#        fp = open(prefix + '%i_1.tab' %(index),'r');
-#        data = fp.read(); 
-#        fp.close();
         data = pd.read_csv(prefix + '%i_1.tab' %(index), delim_whitespace=True, header=n_header_lines)
-        data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
-        data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
-        data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
+        if clean_units:
+            data.columns = [cn.replace(',%','_pct') for cn in data.columns] # substutue _pct for ,% in column names
+            data.columns =  [re.sub(',.*','',cn) for cn in data.columns] # Remove units from column names
+            data.columns =  [re.sub('[{}]','',cn) for cn in data.columns] # Remove unnecessary {} from isochemical seismic derivatives
     except:
-        data = '';
         data = 0;
     return data;
         
