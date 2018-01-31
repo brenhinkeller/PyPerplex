@@ -41,7 +41,7 @@ scratchdir = '/Users/cbkeller/Applications/perplex-stable/scratch/'; # Location 
 #elements =    [ 'SIO2', 'TIO2', 'AL2O3',  'FEO',  'MNO',  'MGO',  'CAO', 'NA2O',  'K2O',  'H2O',  'CO2',];
 #composition = [50.0956, 0.9564, 15.3224, 8.5103, 0.1659, 9.2520, 9.6912, 2.5472, 0.8588, 2.0000, 0.6000,]; 
 
-# Kelemen (2014) primitive continental basalt excluding Mn and Ti
+# Kelemen (2014) primitive continental basalt excluding Mn and Ti since most melt models can't handle them..
 elements =    [ 'SIO2', 'AL2O3',  'FEO',  'MGO',  'CAO', 'NA2O',  'K2O',  'H2O',  'CO2',];
 composition = [50.0956, 15.3224, 8.5103, 9.2520, 9.6912, 2.5472, 0.8588, 2.0000, 0.6000,]; 
 
@@ -71,7 +71,7 @@ HP_excludes = '';
 # # # # # # # # # # # # # # # # Isobaric example # # # # # # # # # # # # # # # #
 
 # Input parameters
-P = 2000; # Pressure, bar
+P = 10000; # Pressure, bar
 T_range = [500+273.15, 1500+273.15]; # Temperature range, Kelvin
 index = 1; # Index determines the name of working directory
 melt_model = 'melt(G)';
@@ -106,6 +106,18 @@ plt.title('melt(G) + G_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
 plt.savefig("MeltComposition.pdf",transparent=True)
+
+# Plot melt composition as a function of melt percent
+plt.figure(index)
+plt.clf()
+for e in ['AL2O3','FEO','MGO','CAO','NA2O','K2O']:
+    plt.plot(melt['SIO2'], melt[e])
+plt.xlabel('Magma SIO2 (wt.%)')
+plt.ylabel('Wt. % in melt')
+plt.title('melt(G) + G_solution_phases, %i bar' %(P))
+plt.legend(fontsize=10)
+plt.show()
+plt.savefig("MeltCompositionvsSiO2.pdf",transparent=True)
 
 # Create DataFrame to hold solid composition and fill it using what we know from system and melt 
 solid = pd.DataFrame();
@@ -144,6 +156,7 @@ plt.ylabel('Weight percent')
 plt.title(melt_model + ' + G_solution_phases, %i bar' %(P))
 plt.legend(fontsize=10)
 plt.show()
+plt.savefig("PhaseModesvsF.pdf",transparent=True)
 
 # # # # # # # # # # # # # Geothermal gradient example # # # # # # # # # # # # # #
 

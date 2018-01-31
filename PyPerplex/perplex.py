@@ -9,7 +9,7 @@ import pandas as pd # Pandas, for importing PerpleX text file output as data fra
 # Set up a PerpleX calculation for a single bulk composition along a specified 
 # geothermal gradient and pressure (depth) range. P specified in bar and T_surf
 # in Kelvin, with geothermal gradient in units of Kelvin/bar
-def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp11ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
+def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','TIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O','H2O'], index = 1, P_range = [280,28000], T_surf = 273.15, geotherm = 0.1, dataset = 'hp02ver.dat', solution_phases = 'O(HP)\nOpx(HP)\nOmph(GHP)\nGt(HP)\noAmph(DP)\ncAmph(DP)\nT\nB\nChl(HP)\nBio(TCC)\nMica(CF)\nCtd(HP)\nIlHm(A)\nSp(HP)\nSapp(HP)\nSt(HP)\nfeldspar_B\nDo(HP)\nF\n', excludes = 'ts\nparg\ngl\nged\nfanth\ng\n'):
     build = perplexdir + 'build'; # path to PerpleX build
     vertex = perplexdir + 'vertex'; # path to PerpleX vertex
 

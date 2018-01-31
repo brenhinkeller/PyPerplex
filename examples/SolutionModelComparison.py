@@ -30,7 +30,7 @@ import time;
     
 # Absolute paths to perplex resources
 perplexdir = '/Users/cbkeller/Applications/perplex-stable/'; # Location of executables and solution models to use
-scratchdir = '/Users/cbkeller/Applications/perplex-stable/scratch1/'; # Location of directory to store output files
+scratchdir = '/Users/cbkeller/Applications/perplex-stable/scratch/'; # Location of directory to store output files
 
 # # # # # # # # # # # # # # # Initial composition # # # # # # # # # # # # # # # #
 
