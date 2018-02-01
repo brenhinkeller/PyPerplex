@@ -27,7 +27,7 @@ def configure_geotherm(perplexdir, scratchdir, composition, elements = ['SIO2','
     # Name, components, and basic options. Holland and Powell (1998) 'CORK' fluid equation state.
     elementstring = '';
     for e in elements:
-        elementstring = elementstring + e + '\n'
+        elementstring = elementstring + e.upper() + '\n'
     fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elementstring));
     # Pressure gradient details
     fp.write('3\nn\ny\n2\n1\n%g\n%g\n%g\n%g\ny\n' %(T_surf, geotherm, P_range[0],P_range[1]));
@@ -67,7 +67,7 @@ def configure_isobaric(perplexdir, scratchdir, composition, elements = ['SIO2','
     # Name, components, and basic options. Holland and Powell (1998) 'CORK' fluid equation state.
     elementstring = '';
     for e in elements:
-        elementstring = elementstring + e + '\n'
+        elementstring = elementstring + e.upper() + '\n'
     fp.write('%i\n%s\nperplex_option.dat\nn\nn\nn\nn\n%s\n5\n' %(index, dataset, elementstring));
     # Pressure gradient details
     fp.write('3\nn\nn\n2\n%g\n%g\n%g\ny\n' %(T_range[0],T_range[1],P));
