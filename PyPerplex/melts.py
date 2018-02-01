@@ -10,7 +10,7 @@ Created on Wed Jan 31 02:00:37 2018
 # Import some useful packages
 import os # os.system lets us access the command line
 import numpy as np # For np.array
-#import pandas as pd # Pandas, for importing PerpleX text file output as data frames
+import pandas as pd # Pandas, for importing PerpleX text file output as data frames
 
 def configure(meltspath, scratchdir, composition, elements, batchstring, T_range, P_range, dT=-10, dP=0, index=1, version='pMELTS',mode='isobaric',fo2path='FMQ',fractionatesolids='!'):
     
@@ -71,8 +71,7 @@ def configure(meltspath, scratchdir, composition, elements, batchstring, T_range
     
     # output prefixectory name
     prefix = scratchdir + 'out%i' %(index);
-    os.system('rm -rf' + prefix); # Ensure directory is empty
-    os.system('mkdir -p '+ prefix);
+    os.system('rm -rf %s; mkdir -p %s' %(prefix,prefix)); # Ensure directory is empty
     
     # Make .melts file containing the starting composition you want to run
     # simulations on
@@ -139,23 +138,87 @@ def configure(meltspath, scratchdir, composition, elements, batchstring, T_range
     # Run the command
     # Edit the following line(s to make sure you have a correct path to the 'run_alphamelts.command' perl script
     os.system('cd ' + prefix  + '; ' + meltspath + ' -f melts_env.txt -b batch.txt');
-        
-#    # Import the results
-#    if exist([prefix '/Phase_main_tbl.txt'],'file')
-#        cells=importc([prefix '/Phase_main_tbl.txt'],' ');
-#        emptycols=all(cellfun('isempty', cells),1);
-#        cells=cells(:,~emptycols);
-#        pos=[find(all(cellfun('isempty', cells),2)); size(cells,1)+1];
-#        melts.minerals=cell(length(pos)-1,1);
-#        for i=1:(length(pos)-1)
-#            name=varname(cells(pos(i)+1,1));
-#            melts.(name{1}).elements=varname(cells(pos(i)+2,~cellfun('isempty',cells(pos(i)+2,:))));
-#            melts.(name{1}).data=str2double(cells(pos(i)+3:pos(i+1)-1,1:length(melts.(name{1}).elements)));
-#            if elementout; melts.(name{1})=elementify(melts.(name{1})); end
-#            melts.minerals(i)=name;
-#        end
-#    else
-#        melts=[];
-#    end
-    return
+    return;
+
+
+# Get modal phase proportions, return as pandas DataFrame
+def query(scratchdir, index=1):
+    prefix = scratchdir + 'out%i/' %(index); # path to data files
+    # n_header_lines = 1;
     
+    # Read results and return them if possible
+    try:
+        # Returns results as text string
+        fp = open(prefix + 'Phase_main_tbl.txt','r');
+        data = fp.read(); 
+        fp.close();
+    except:
+        data = '';
+    return data;
+
+# Get modal phase proportions, return as pandas DataFrame
+def query_modes(scratchdir, index=1):
+    prefix = scratchdir + 'out%i/' %(index); # path to data files
+    n_header_lines = 1;
+    
+    # Read results and return them if possible
+    try:
+        data = pd.read_csv(prefix + 'Phase_mass_tbl.txt', delim_whitespace=True, header=n_header_lines);
+                # Ensure columns are numeric
+
+        for c in data.columns:
+            if data[c].dtype!='float64':
+                data[c] = np.genfromtxt(data[c])
+    except:
+        data = 0;
+    return data;
+
+
+# Get liquid composition, return as pandas DataFrame
+def query_liquid(scratchdir, index=1):
+    prefix = scratchdir + 'out%i/' %(index); # path to data files
+    n_header_lines = 1;
+    
+    # Read results and return them if possible
+    try:
+        data = pd.read_csv(prefix + 'Liquid_comp_tbl.txt', delim_whitespace=True, header=n_header_lines);
+        # Ensure columns are numeric
+        for c in data.columns:
+            if data[c].dtype!='float64':
+                data[c] = np.genfromtxt(data[c])
+    except:
+        data = 0;
+    return data;
+
+
+# Read solid composition, return as pandas DataFrame
+def query_solid(scratchdir, index=1):
+    prefix = scratchdir + 'out%i/' %(index); # path to data files
+    n_header_lines = 1;
+    
+    # Read results and return them if possible
+    try:
+        data = pd.read_csv(prefix + 'Solid_comp_tbl.txt', delim_whitespace=True, header=n_header_lines);
+        # Ensure columns are numeric
+        for c in data.columns:
+            if data[c].dtype!='float64':
+                data[c] = np.genfromtxt(data[c])
+    except:
+        data = 0;
+    return data;
+
+# Read system thermodynamic data, return as pandas DataFrame
+def query_system(scratchdir, index=1):
+    prefix = scratchdir + 'out%i/' %(index); # path to data files
+    n_header_lines = 1;
+    
+    # Read results and return them if possible
+    try:
+        data = pd.read_csv(prefix + 'System_main_tbl.txt', delim_whitespace=True, header=n_header_lines);
+        # Ensure columns are numeric
+        for c in data.columns:
+            if data[c].dtype!='float64':
+                data[c] = np.genfromtxt(data[c])
+    except:
+        data = 0;
+    return data;
