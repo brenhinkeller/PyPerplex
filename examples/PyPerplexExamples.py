@@ -68,7 +68,7 @@ JH_excludes = 'ts\nparg\ngl\nged\nfanth\n';
 HP_solution_phases = 'Omph(HP)\nOpx(HP)\nGlTrTsPg\nAnth\nO(HP)\nSp(HP)\nGt(HP)\nfeldspar_B\nMica(CF)\nBio(TCC)\nChl(HP)\nCtd(HP)\nSapp(HP)\nSt(HP)\nIlHm(A)\nDo(HP)\nT\nB\nF\n';
 HP_excludes = '';
 
-# # # # # # # # # # # # # # # # Isobaric example # # # # # # # # # # # # # # # #
+#%%  # # # # # # # # # # # # # # Isobaric example # # # # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # Pressure, bar
@@ -158,7 +158,7 @@ plt.legend(fontsize=10)
 plt.show()
 plt.savefig("PhaseModesvsF.pdf",transparent=True)
 
-# # # # # # # # # # # # # Geothermal gradient example # # # # # # # # # # # # # #
+#%% # # # # # # # # # # # Geothermal gradient example # # # # # # # # # # # # # #
 
 # Input parameters
 P_range = [280, 28000] # Pressure range to explore, bar (1-100 km)

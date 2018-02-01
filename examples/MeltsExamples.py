@@ -7,8 +7,7 @@ Created on Thu Feb  1 00:10:31 2018
 """
 from PyPerplex import melts
 
-
-#%% ######################## pMelts equil. batch melting ########################
+#%% # # # # # # # # # # # # pMelts equil. batch melting # # # # # # # # # # # # #
 meltspath = '/usr/local/bin/run_alphamelts.command';
 scratchdir = '/Users/cbkeller/Applications/perplex-stable';
 
@@ -23,7 +22,7 @@ composition=[44.8030, 0.1991, 4.4305, 0.9778, 0.3823, 7.1350, 0.1344, 37.6345, 0
 batchstring='1\nsc.melts\n10\n1\n3\n1\nliquid\n1\n1.0\n0\n10\n0\n4\n0\n';
 # Run simulation
 melts.configure(meltspath, scratchdir, composition, elements, batchstring, T_range, P_range, dT=-10, dP=0, index=1, version='pMELTS',mode='isobaric',fo2path='FMQ')
-#################################################################################
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 ## Plot results
 #plotelements={'SiO2','Al2O3','CaO','MgO','FeO','Na2O','K2O'};

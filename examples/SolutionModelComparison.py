@@ -65,7 +65,7 @@ JH_excludes = 'ts\nparg\ngl\nged\nfanth\n';
 HP_solution_phases = 'Omph(HP)\nOpx(HP)\nGlTrTsPg\nAnth\nO(HP)\nSp(HP)\nGt(HP)\nfeldspar_B\nMica(CF)\nBio(TCC)\nChl(HP)\nCtd(HP)\nSapp(HP)\nSt(HP)\nIlHm(A)\nDo(HP)\nT\nB\nF\n';
 HP_excludes = '';
 
-# # # # # # # # # # # # # melt(G) + G_solution_phases # # # # # # # # # # # # # #
+#%% # # # # # # # # # # # melt(G) + G_solution_phases # # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # bar
@@ -125,7 +125,7 @@ plt.show()
 plt.savefig("SolidTest_G.pdf",transparent=True)
 
 
-# # # # # # # # # # # # # melt(G) + W_solution_phases # # # # # # # # # # # # # #
+#%% # # # # # # # # # # # melt(G) + W_solution_phases # # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # Pressure, bar
@@ -183,7 +183,7 @@ plt.legend(fontsize=10)
 plt.show()
 plt.savefig("SolidTest_G_W.pdf",transparent=True)
 
-# # # # # # # # # # # # # melt(G) + JH_solution_phases # # # # # # # # # # # # # 
+#%% # # # # # # # # # # # melt(G) + JH_solution_phases # # # # # # # # # # # # # 
 
 # Input parameters
 P = 10000; # bar
@@ -241,7 +241,7 @@ plt.legend(fontsize=10)
 plt.show()
 plt.savefig("SolidTest_G_JH.pdf",transparent=True)
 
-# # # # # # # # # # # # pMELTS(G) + HP_solution_phases # # # # # # # # # # # # # 
+#%% # # # # # # # # # # pMELTS(G) + HP_solution_phases # # # # # # # # # # # # # 
 
 # Input parameters
 P = 10000; # bar
@@ -300,7 +300,7 @@ plt.show()
 plt.savefig("SolidTest_pMELTS_HP.pdf",transparent=True)
 
 
-# # # # # # # # # # # # # melt(W) + W_solution_phases # # # # # # # # # # # # # #
+#%% # # # # # # # # # # # melt(W) + W_solution_phases # # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # bar
@@ -358,7 +358,7 @@ plt.legend(fontsize=10)
 plt.show()
 plt.savefig("SolidTest_W.pdf",transparent=True)
 
-# # # # # # # # # # # # # melt(W) + G_solution_phases # # # # # # # # # # # # # #
+#%% # # # # # # # # # # # melt(W) + G_solution_phases # # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # bar
@@ -416,7 +416,7 @@ plt.legend(fontsize=10)
 plt.show()
 plt.savefig("SolidTest_W_G.pdf",transparent=True)
 
-# # # # # # # # # # # # # melt(W) + JH_solution_phases # # # # # # # # # # # # #
+#%% # # # # # # # # # # # melt(W) + JH_solution_phases # # # # # # # # # # # # #
 
 # Input parameters
 P = 10000; # bar
