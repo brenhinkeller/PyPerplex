@@ -103,7 +103,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_G.pdf",transparent=True)
 
@@ -120,7 +120,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_G.pdf",transparent=True)
 
@@ -162,7 +162,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + W_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_G_W.pdf",transparent=True)
 
@@ -179,7 +179,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + W_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_G_W.pdf",transparent=True)
 
@@ -220,7 +220,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + JH_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_G_JH.pdf",transparent=True)
 
@@ -237,7 +237,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(G) + JH_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_G_JH.pdf",transparent=True)
 
@@ -278,7 +278,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('pMELTS(G) + HP_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_pMELTS_HP.pdf",transparent=True)
 
@@ -295,7 +295,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('pMELTS(G) + HP_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_pMELTS_HP.pdf",transparent=True)
 
@@ -337,7 +337,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + W_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_W.pdf",transparent=True)
 
@@ -354,7 +354,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + W_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_W.pdf",transparent=True)
 
@@ -395,7 +395,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_W_G.pdf",transparent=True)
 
@@ -412,7 +412,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_W_G.pdf",transparent=True)
 
@@ -441,7 +441,7 @@ plt.figure(0)
 plt.plot(melt['T(K)']-273.15, melt['wt_pct'])
 plt.xlabel('T (C)')
 plt.ylabel('Percent melt')
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("PercentMeltVsTemp.pdf",transparent=True)
 
@@ -453,7 +453,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(W) + JH_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltingTest_W_JH.pdf",transparent=True)
 
@@ -470,6 +470,6 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title('melt(W) + JH_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidTest_W_JH.pdf",transparent=True)

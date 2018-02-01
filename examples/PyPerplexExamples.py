@@ -103,7 +103,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltComposition.pdf",transparent=True)
 
@@ -115,7 +115,7 @@ for e in ['AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Magma SIO2 (wt.%)')
 plt.ylabel('Wt. % in melt')
 plt.title('melt(G) + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("MeltCompositionvsSiO2.pdf",transparent=True)
 
@@ -132,7 +132,7 @@ for e in ['SIO2','AL2O3','FEO','MGO','CAO','NA2O','K2O']:
 plt.xlabel('Percent melt')
 plt.ylabel('Wt. % in solid')
 plt.title(melt_model + ' + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("SolidComposition.pdf",transparent=True)
 
@@ -143,7 +143,7 @@ for m in modes.columns[2:]:
 plt.xlabel('T (C)')
 plt.ylabel('Weight percent')
 plt.title(melt_model+ ' + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("PhaseModes.pdf",transparent=True)
 
@@ -154,7 +154,7 @@ for m in modes.columns[2:]:
 plt.xlabel('Percent melt')
 plt.ylabel('Weight percent')
 plt.title(melt_model + ' + G_solution_phases, %i bar' %(P))
-plt.legend(fontsize=10)
+plt.legend(fontsize=10,frameon=False)
 plt.show()
 plt.savefig("PhaseModesvsF.pdf",transparent=True)
 
