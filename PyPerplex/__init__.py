@@ -1,1 +1,1 @@
-__all__ = ["perplex"]
+__all__ = ["perplex", "melts"]
